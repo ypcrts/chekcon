@@ -1,0 +1,32 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+version: '3'
+
+# Define services
+services:
+
+  # App Service
+  checkcon:
+    # Configuration for building the docker image for the service
+    build:
+      context: . # Use an image built from the specified dockerfile in the current directory.
+      dockerfile: Dockerfile
+      #restart: unless-stopped
+    depends_on: 
+      - redis # This service depends on redis. Start that first.
+    environment: # Pass environment variables to the service
+      CHECKCON_REDIS_STR: redis://redis
+      CHECKCON_CONFIG_FILE: config.json
+    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+      - checkcon
+
+  # Redis Service   
+  redis:
+    image: "redis:alpine" # Use a public Redis image to build the redis service    
+    restart: unless-stopped
+    networks:
+      - checkcon
+
+# Networks to be created to facilitate communication between containers
+networks:
+  checkcon:
+    driver: bridge
