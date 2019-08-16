@@ -1,0 +1,11 @@
+aiodns==2.0.0
+aioping==0.2.0
+aioredis==1.2.0
+async-timeout==3.0.1
+cached-property==1.5.1
+cffi==1.12.3
+fqdn==1.1.0
+hiredis==1.0.0
+pycares==3.0.0
+pycparser==2.19
+uvloop==0.13.0
