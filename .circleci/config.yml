@@ -3,16 +3,26 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.7
-        environment: # environment variables for primary container
-          PIPENV_VENV_IN_PROJECT: true
+        #environment: # environment variables for primary container
+        #  PIPENV_VENV_IN_PROJECT: true
       - image: redis
 
+    working_directory: ~/repo
 
-    steps: # steps that comprise the `build` job
-      - checkout # check out source code to working directory
+    steps:
+      # Step 1: obtain repo from GitHub
+      - checkout
+      # Step 2: create virtual env and install dependencies
       - run:
+          name: install dependencies
           command: |
-            sudo pip install pipenv
-            pipenv install --dev
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+            pip install -r requirements-dev.txt
+      # Step 3: run linter and tests
       - run:
-          command: pipenv run "pytest --cov=./"
+          name: run tests
+          command: |
+            . venv/bin/activate
+            pytest --cov=./
