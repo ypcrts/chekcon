@@ -6,7 +6,7 @@ import asyncio
 import uvloop
 
 from . import VAR_REDIS_STR, VAR_CONFIG_FILE, DEFAULT_REDIS_STR, DEFAULT_CONFIG_FILE
-from .helper import validate_uri, read_env, read_config_file
+from .helper import read_env, read_config_file
 from .checker import Checker
 
 
@@ -17,13 +17,9 @@ def handle_sigterm():
 
 def create_tasks(loop, redis_conn_str, config_list):
     ''' create task on loop, for every item in the config_list '''
-    tasks = {}
     for i in config_list:
-        pre_proto, pre_host, pre_port = validate_uri(i)
-        if pre_proto is not False or pre_host is not False or pre_port is not False:
-            check = Checker(pre_proto, pre_host, pre_port, redis_conn_str)
-            tasks[i] = loop.create_task(check())
-    return tasks
+        check = Checker(i, redis_conn_str)
+        loop.create_task(check())
 
 def checkcon():
     ''' main function '''

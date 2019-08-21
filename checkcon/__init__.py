@@ -37,3 +37,5 @@ TEXT_EMPTY_LIST = 'json is empty'
 TEXT_VARIABLE_NOT_SET = "environment variable {name} is not set."
 
 TEXT_REDIS_UNABLE2CONNECT = 'unable to connect to redis: '
+
+TEXT_WRONG_INPUT = "the input string {string} can not parsed"

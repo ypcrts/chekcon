@@ -9,20 +9,24 @@ import asyncio
 import aioping
 import aioredis
 
-from checkcon import TEXT_REDIS_UNABLE2CONNECT
+from checkcon import TEXT_REDIS_UNABLE2CONNECT, TEXT_WRONG_INPUT
+
+from .helper import validate_uri
 
 class Checker():
     ''' class to check connections '''
-    def __init__(self, proto, host, port, redis, interval=10, timeout=5):
-        self.proto = proto
-        self.host = host
-        self.port = port
+    def __init__(self, data_str, redis_str, interval=10, timeout=5):
         self.interval = interval
         self.timeout = timeout
-        self.redis_str = redis
-        self.key = self.proto + '_' + self.host + '_' + str(self.port)
+        self.redis_str = redis_str
+        self.key = data_str
+        self.proto, self.host, self.port = validate_uri(data_str)
 
     async def __call__(self):
+        if self.proto is False or self.host is False or self.port is False:
+            print(TEXT_WRONG_INPUT.format(string=self.key))
+            return False
+
         try:
             redis = await aioredis.create_redis_pool(self.redis_str)
         except (aioredis.RedisError, OSError) as e:
