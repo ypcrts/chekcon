@@ -1,6 +1,13 @@
 ''' checkcon module '''
 
 #---------------------------------------------
+# meta data
+PACKAGE_NAME = 'checkcon'
+VERSION = '0.1.dev'
+
+
+
+#---------------------------------------------
 # gloabl variables
 
 # enviorment variable names

@@ -18,7 +18,7 @@ def create_tasks(loop, redis_conn_str, config_list):
             tasks[i] = loop.create_task(check())
     return tasks
 
-def cmd():
+def checkcon():
     ''' main function '''
     loop = uvloop.new_event_loop()
     asyncio.set_event_loop(loop)
