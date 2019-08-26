@@ -1,11 +1,11 @@
 #! /usr/bin/env python
 ''' test cmd '''
 
-import os
+#import os
 import asyncio
 import pytest
 
-#from checkcon import ERROR_ENV_NOT_SET, ERROR_CONFIG_NOLIST, ERROR_CONFIG_EMPTY
+#from checkcon import VAR_CONFIG_FILE
 
 from checkcon.cmd import handle_sigterm
 

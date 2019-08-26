@@ -27,6 +27,8 @@ ERROR_ENV_NOT_SET = 1
 # config
 ERROR_CONFIG_NOLIST = 10
 ERROR_CONFIG_EMPTY = 11
+ERROR_CONFIG_NO_JSON = 12
+ERROR_CONFIG_UNABLE_READ = 13
 
 
 #---------------------------------------------

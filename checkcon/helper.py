@@ -7,12 +7,13 @@ import json
 import ipaddress
 from fqdn import FQDN
 
-from . import ERROR_ENV_NOT_SET, ERROR_CONFIG_NOLIST, ERROR_CONFIG_EMPTY
+from . import ERROR_ENV_NOT_SET, ERROR_CONFIG_NOLIST, ERROR_CONFIG_EMPTY,\
+        ERROR_CONFIG_NO_JSON, ERROR_CONFIG_UNABLE_READ
 from . import TEXT_EMPTY_LIST, TEXT_NOT_LIST, TEXT_VARIABLE_NOT_SET
 
-def i_am_root():
+def i_am_root(root=0):
     ''' check if I am root '''
-    if os.geteuid() == 0:
+    if os.geteuid() == root:
         return True
     return False
 
@@ -94,10 +95,10 @@ def read_config_file(file_name):
             config = json.load(fh)
     except ValueError as e:
         print('Unable to parse json: ' + str(e))
-        sys.exit(4)
+        sys.exit(ERROR_CONFIG_NO_JSON)
     except (PermissionError, FileNotFoundError) as e:
         print(str(e))
-        sys.exit(2)
+        sys.exit(ERROR_CONFIG_UNABLE_READ)
 
     is_config_list(config)
     return config

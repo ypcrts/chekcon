@@ -4,14 +4,17 @@
 import os
 import pytest
 
-from checkcon import ERROR_ENV_NOT_SET, ERROR_CONFIG_NOLIST, ERROR_CONFIG_EMPTY
+from checkcon import ERROR_ENV_NOT_SET, ERROR_CONFIG_NOLIST, ERROR_CONFIG_EMPTY,\
+    ERROR_CONFIG_NO_JSON, ERROR_CONFIG_UNABLE_READ
 
 from checkcon.helper import i_am_root, validate_proto, validate_host, validate_port,\
-    validate_uri, read_env, is_config_list
+    validate_uri, read_env, is_config_list, read_config_file
 
 def test_i_am_root():
     ''' test i_am_root '''
     assert i_am_root() is False
+    uid = os.getuid()
+    assert i_am_root(root=uid) is True
 
 def test_validate_proto():
     ''' test validate_proto '''
@@ -98,3 +101,20 @@ def test_is_config_list():
         with pytest.raises(SystemExit) as e:
             is_config_list(i)
         assert e.value.code == ERROR_CONFIG_NOLIST
+
+def test_read_config_file():
+    ''' test read_config_file '''
+    not_exisiting_file = 'test-data/not-exists'
+    no_valid_data = 'test-data/invalid'
+    valid_data = 'test-data/valid'
+
+    with pytest.raises(SystemExit) as e:
+        read_config_file(not_exisiting_file)
+    assert e.value.code == ERROR_CONFIG_UNABLE_READ
+
+    with pytest.raises(SystemExit) as e:
+        read_config_file(no_valid_data)
+    assert e.value.code == ERROR_CONFIG_NO_JSON
+
+    conf = read_config_file(valid_data)
+    assert conf == ['tcp_www.google.com_80']
