@@ -6,6 +6,6 @@ cached-property==1.5.1
 cffi==1.12.3
 fqdn==1.2.0
 hiredis==1.0.0
-pycares==3.0.0
+pycares==4.2.0
 pycparser==2.19
 uvloop==0.13.0
